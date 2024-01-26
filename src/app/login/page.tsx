@@ -13,6 +13,7 @@ export default function LoginPage() {
   });
   const [buttonDisabled, setButtonDisabled] = React.useState(false);
   const [loading, setLoading] = React.useState(false);
+  const [error, setError] = React.useState(false);
 
 
   const onLogin = async () => {
@@ -24,6 +25,7 @@ export default function LoginPage() {
       router.push("/profile")
 
     } catch (error: any) {
+      setError(true)
       console.log("Failed to login" , error.message);
       toast.error(error.message)
     }finally{
@@ -42,6 +44,11 @@ export default function LoginPage() {
 
   return (
     <div className="flex flex-col items-center justify-center min-h-screen py-2">
+      
+         {error ? (
+         <div> <h3 className="text-center m-2 text-red-500">Invalid Email or password</h3></div>
+        ) : ''}
+      
       <h1 className="text-center text-white text-2xl">{loading ? "processing" : "Login"}</h1>
       <hr />
       <label htmlFor="password">Email</label>
@@ -62,6 +69,8 @@ export default function LoginPage() {
         onChange={(e) => setUser({ ...user, password: e.target.value })}
         placeholder="password"
       />
+      <Link style={{marginBottom: "34px", marginLeft: "85px"}}  href="/forgotpassword">Forgot Passord</Link>
+
       <button
         onClick={onLogin}
         style={{
